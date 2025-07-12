@@ -1,16 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+
 import {
-  // Lucide React Icons
   DollarSign,
   Users,
   TrendingUp,
-  ShoppingCart,
-  ArrowUp,
-  ArrowDown,
-  Bell,
-  Settings,
-  Search,
-  Home,
   BarChart3,
   Sun,
   Moon,
@@ -31,14 +25,12 @@ import {
   Package,
   Star,
   Download,
-  Eye,
-  Server
+  Home ,
+   Bell,
 } from 'lucide-react';
 
 import {
-  // Recharts Components
   ResponsiveContainer,
-  AreaChart,
   Area,
   CartesianGrid,
   XAxis,
@@ -55,11 +47,9 @@ import {
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('6M');
-//   const [notifications, setNotifications] = useState(3);
   const [animateCards, setAnimateCards] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [darkMode, setDarkMode] = useState(true);
-//   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -90,43 +80,52 @@ const Dashboard = () => {
     { name: 'Cloud Storage', sales: 543, revenue: 10860, trend: 5, color: '#F59E0B', category: 'Storage' },
   ];
 
- const StatCard = ({ title, value, change, trend, icon: Icon, color, delay = 0, subtitle, animateCards }) => (
-  <div 
-    className={`group relative overflow-hidden bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 rounded-3xl p-6 border border-gray-800/50 hover:border-${color}-500/30 transition-all duration-700 hover:scale-[1.03] transform ${animateCards ? 'animate-slide-in-bottom' : 'opacity-0 translate-y-8'} hover:shadow-2xl hover:shadow-${color}-500/10`}
-    style={{ animationDelay: `${delay}ms` }}
-  >
-    <div className="absolute inset-0 bg-gradient-to-br from-gray-900/50 to-gray-800/30 backdrop-blur-xl"></div>
-    <div className={`absolute -top-6 -right-6 w-32 h-32 bg-gradient-to-br from-${color}-500/10 to-${color}-600/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700`}></div>
-    
-    <div className="relative z-10">
-      <div className="flex items-start justify-between mb-6">
-        <div className={`w-14 h-14 bg-gradient-to-r from-${color}-500 to-${color}-600 rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
-          <Icon className="w-7 h-7 text-white" />
-        </div>
-        <div className={`px-3 py-1.5 rounded-full text-xs font-bold backdrop-blur-sm ${
-          trend === 'up' 
-            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30' 
-            : 'bg-red-500/20 text-red-300 border border-red-400/30'
-        }`}>
-          <span className="flex items-center gap-1">
-            {trend === 'up' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}
-            {change}
-          </span>
+
+const StatCard = ({
+  title,
+  value,
+  change,
+  trend,
+  icon: Icon,
+  color,
+  delay,
+  subtitle,
+  animateCards
+}) => {
+  return (
+    <div className={`...`}>
+      {/* Your JSX - make sure to use all props here */}
+      <div className="flex items-center">
+        <Icon className={`w-6 h-6 text-${color}-400`} />
+        <div className="ml-4">
+          <h3 className="text-gray-400 text-sm">{title}</h3>
+          <p className="text-white text-2xl font-bold">{value}</p>
+          {subtitle && <p className="text-gray-500 text-xs">{subtitle}</p>}
+          {change && (
+            <p className={`text-sm ${trend === 'up' ? 'text-emerald-400' : 'text-red-400'}`}>
+              {change} {trend === 'up' ? '↑' : '↓'}
+            </p>
+          )}
         </div>
       </div>
-      
-      <h3 className="text-gray-400 text-sm font-medium mb-1 tracking-wider uppercase">{title}</h3>
-      <p className="text-3xl font-black text-white tracking-tight mb-1">{value}</p>
-      {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
-      
-      <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-${color}-500/50 to-transparent`}></div>
     </div>
-  </div>
-);
+  );
+};
 
+StatCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  change: PropTypes.string,
+  trend: PropTypes.oneOf(['up', 'down']),
+  icon: PropTypes.elementType.isRequired,
+  color: PropTypes.string.isRequired,
+  delay: PropTypes.number,
+  subtitle: PropTypes.string,
+  animateCards: PropTypes.bool,
+};
 
-  const QuickActionButton = ({ title, icon: Icon, color, onClick, description }) => (
-  <button 
+const QuickActionButton = ({ title, icon: Icon, color, onClick, description }) => (
+  <button
     onClick={onClick}
     className={`group relative overflow-hidden bg-gradient-to-br from-${color}-600 to-${color}-700 hover:from-${color}-500 hover:to-${color}-600 text-white p-6 rounded-3xl transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-${color}-500/30 transform hover:-translate-y-1`}
   >
@@ -139,8 +138,15 @@ const Dashboard = () => {
     </div>
   </button>
 );
+QuickActionButton.propTypes = {
+  title: PropTypes.string.isRequired,
+  icon: PropTypes.elementType.isRequired,
+  color: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  description: PropTypes.string,
+};
 
- const ActivityItem = ({ activity }) => (
+const ActivityItem = ({ activity }) => (
   <div className="flex items-center space-x-4 p-4 bg-gradient-to-r from-gray-800/20 to-gray-700/10 rounded-2xl hover:from-gray-800/40 hover:to-gray-700/20 transition-all duration-300 border border-gray-700/20 hover:border-gray-600/30 group">
     <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${
       activity.status === 'success' ? 'from-emerald-500 to-emerald-600' :
@@ -164,6 +170,17 @@ const Dashboard = () => {
     </div>
   </div>
 );
+
+ActivityItem.propTypes = {
+  activity: PropTypes.shape({
+    status: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
+    user: PropTypes.string.isRequired,
+    action: PropTypes.string.isRequired,
+    time: PropTypes.string.isRequired,
+    amount: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
 
   if (isLoading) {
     return (
@@ -560,7 +577,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-
+{/* 
       <style jsx>{`
         @keyframes slide-in-bottom {
           from {
@@ -591,7 +608,7 @@ const Dashboard = () => {
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: linear-gradient(to bottom, #7C3AED, #0891B2);
         }
-      `}</style>
+      `}</style> */}
     </div>
   );
 };
