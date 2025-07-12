@@ -90,79 +90,80 @@ const Dashboard = () => {
     { name: 'Cloud Storage', sales: 543, revenue: 10860, trend: 5, color: '#F59E0B', category: 'Storage' },
   ];
 
-  const StatCard = ({ title, value, change, trend, icon: Icon, color, delay = 0, subtitle }) => (
-    <div 
-      className={`group relative overflow-hidden bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 rounded-3xl p-6 border border-gray-800/50 hover:border-${color}-500/30 transition-all duration-700 hover:scale-[1.03] transform ${animateCards ? 'animate-slide-in-bottom' : 'opacity-0 translate-y-8'} hover:shadow-2xl hover:shadow-${color}-500/10`}
-      style={{ animationDelay: `${delay}ms` }}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900/50 to-gray-800/30 backdrop-blur-xl"></div>
-      <div className={`absolute -top-6 -right-6 w-32 h-32 bg-gradient-to-br from-${color}-500/10 to-${color}-600/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700`}></div>
-      
-      <div className="relative z-10">
-        <div className="flex items-start justify-between mb-6">
-          <div className={`w-14 h-14 bg-gradient-to-r from-${color}-500 to-${color}-600 rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
-            <Icon className="w-7 h-7 text-white" />
-          </div>
-          <div className={`px-3 py-1.5 rounded-full text-xs font-bold backdrop-blur-sm ${
-            trend === 'up' 
-              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30' 
-              : 'bg-red-500/20 text-red-300 border border-red-400/30'
-          }`}>
-            <span className="flex items-center gap-1">
-              {trend === 'up' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}
-              {change}
-            </span>
-          </div>
+ const StatCard = ({ title, value, change, trend, icon: Icon, color, delay = 0, subtitle, animateCards }) => (
+  <div 
+    className={`group relative overflow-hidden bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 rounded-3xl p-6 border border-gray-800/50 hover:border-${color}-500/30 transition-all duration-700 hover:scale-[1.03] transform ${animateCards ? 'animate-slide-in-bottom' : 'opacity-0 translate-y-8'} hover:shadow-2xl hover:shadow-${color}-500/10`}
+    style={{ animationDelay: `${delay}ms` }}
+  >
+    <div className="absolute inset-0 bg-gradient-to-br from-gray-900/50 to-gray-800/30 backdrop-blur-xl"></div>
+    <div className={`absolute -top-6 -right-6 w-32 h-32 bg-gradient-to-br from-${color}-500/10 to-${color}-600/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700`}></div>
+    
+    <div className="relative z-10">
+      <div className="flex items-start justify-between mb-6">
+        <div className={`w-14 h-14 bg-gradient-to-r from-${color}-500 to-${color}-600 rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
+          <Icon className="w-7 h-7 text-white" />
         </div>
-        
-        <h3 className="text-gray-400 text-sm font-medium mb-1 tracking-wider uppercase">{title}</h3>
-        <p className="text-3xl font-black text-white tracking-tight mb-1">{value}</p>
-        {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
-        
-        <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-${color}-500/50 to-transparent`}></div>
+        <div className={`px-3 py-1.5 rounded-full text-xs font-bold backdrop-blur-sm ${
+          trend === 'up' 
+            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30' 
+            : 'bg-red-500/20 text-red-300 border border-red-400/30'
+        }`}>
+          <span className="flex items-center gap-1">
+            {trend === 'up' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}
+            {change}
+          </span>
+        </div>
       </div>
+      
+      <h3 className="text-gray-400 text-sm font-medium mb-1 tracking-wider uppercase">{title}</h3>
+      <p className="text-3xl font-black text-white tracking-tight mb-1">{value}</p>
+      {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
+      
+      <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-${color}-500/50 to-transparent`}></div>
     </div>
-  );
+  </div>
+);
+
 
   const QuickActionButton = ({ title, icon: Icon, color, onClick, description }) => (
-    <button 
-      onClick={onClick}
-      className={`group relative overflow-hidden bg-gradient-to-br from-${color}-600 to-${color}-700 hover:from-${color}-500 hover:to-${color}-600 text-white p-6 rounded-3xl transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-${color}-500/30 transform hover:-translate-y-1`}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-      <div className="absolute -top-4 -right-4 w-20 h-20 bg-white/5 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
-      <div className="relative z-10">
-        <Icon className="w-8 h-8 mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500" />
-        <div className="text-sm font-bold tracking-wide mb-1">{title}</div>
-        <div className="text-xs opacity-80">{description}</div>
-      </div>
-    </button>
-  );
-
-  const ActivityItem = ({ activity, idx }) => (
-    <div className="flex items-center space-x-4 p-4 bg-gradient-to-r from-gray-800/20 to-gray-700/10 rounded-2xl hover:from-gray-800/40 hover:to-gray-700/20 transition-all duration-300 border border-gray-700/20 hover:border-gray-600/30 group">
-      <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${
-        activity.status === 'success' ? 'from-emerald-500 to-emerald-600' :
-        activity.status === 'warning' ? 'from-amber-500 to-amber-600' :
-        activity.status === 'error' ? 'from-red-500 to-red-600' : 'from-blue-500 to-blue-600'
-      } flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-        {activity.status === 'success' && <CheckCircle className="w-6 h-6 text-white" />}
-        {activity.status === 'warning' && <AlertTriangle className="w-6 h-6 text-white" />}
-        {activity.status === 'error' && <XCircle className="w-6 h-6 text-white" />}
-        {activity.status === 'info' && <Info className="w-6 h-6 text-white" />}
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-white text-sm font-semibold truncate group-hover:text-gray-100">{activity.user}</p>
-        <p className="text-gray-400 text-xs truncate group-hover:text-gray-300">{activity.action}</p>
-        <p className="text-gray-500 text-xs">{activity.time}</p>
-      </div>
-      <div className="text-right">
-        <p className={`text-sm font-bold ${activity.amount.startsWith('-') ? 'text-red-400' : 'text-emerald-400'}`}>
-          {activity.amount}
-        </p>
-      </div>
+  <button 
+    onClick={onClick}
+    className={`group relative overflow-hidden bg-gradient-to-br from-${color}-600 to-${color}-700 hover:from-${color}-500 hover:to-${color}-600 text-white p-6 rounded-3xl transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-${color}-500/30 transform hover:-translate-y-1`}
+  >
+    <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+    <div className="absolute -top-4 -right-4 w-20 h-20 bg-white/5 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
+    <div className="relative z-10">
+      <Icon className="w-8 h-8 mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500" />
+      <div className="text-sm font-bold tracking-wide mb-1">{title}</div>
+      <div className="text-xs opacity-80">{description}</div>
     </div>
-  );
+  </button>
+);
+
+ const ActivityItem = ({ activity }) => (
+  <div className="flex items-center space-x-4 p-4 bg-gradient-to-r from-gray-800/20 to-gray-700/10 rounded-2xl hover:from-gray-800/40 hover:to-gray-700/20 transition-all duration-300 border border-gray-700/20 hover:border-gray-600/30 group">
+    <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${
+      activity.status === 'success' ? 'from-emerald-500 to-emerald-600' :
+      activity.status === 'warning' ? 'from-amber-500 to-amber-600' :
+      activity.status === 'error' ? 'from-red-500 to-red-600' : 'from-blue-500 to-blue-600'
+    } flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+      {activity.status === 'success' && <CheckCircle className="w-6 h-6 text-white" />}
+      {activity.status === 'warning' && <AlertTriangle className="w-6 h-6 text-white" />}
+      {activity.status === 'error' && <XCircle className="w-6 h-6 text-white" />}
+      {activity.status === 'info' && <Info className="w-6 h-6 text-white" />}
+    </div>
+    <div className="flex-1 min-w-0">
+      <p className="text-white text-sm font-semibold truncate group-hover:text-gray-100">{activity.user}</p>
+      <p className="text-gray-400 text-xs truncate group-hover:text-gray-300">{activity.action}</p>
+      <p className="text-gray-500 text-xs">{activity.time}</p>
+    </div>
+    <div className="text-right">
+      <p className={`text-sm font-bold ${activity.amount.startsWith('-') ? 'text-red-400' : 'text-emerald-400'}`}>
+        {activity.amount}
+      </p>
+    </div>
+  </div>
+);
 
   if (isLoading) {
     return (
