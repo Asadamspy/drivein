@@ -55,11 +55,11 @@ import {
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('6M');
-  const [notifications, setNotifications] = useState(3);
+//   const [notifications, setNotifications] = useState(3);
   const [animateCards, setAnimateCards] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [darkMode, setDarkMode] = useState(true);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+//   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
